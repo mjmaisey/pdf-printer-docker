@@ -1,14 +1,7 @@
 #!/bin/bash
 set -e
 
-# --- Read printer name from config ---
-CONFIG_FILE="/config/printer.conf"
-PRINTER_NAME="PDF-Printer"
-
-if [ -f "$CONFIG_FILE" ]; then
-    VALUE=$(grep -m1 '^PRINTER_NAME=' "$CONFIG_FILE" 2>/dev/null | cut -d'=' -f2- | tr -d '[:space:]')
-    [ -n "$VALUE" ] && PRINTER_NAME="$VALUE"
-fi
+PRINTER_NAME="${PRINTER_NAME:-PDF-Printer}"
 
 echo "Configuring CUPS with printer: $PRINTER_NAME"
 

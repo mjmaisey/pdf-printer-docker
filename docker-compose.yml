@@ -1,10 +1,11 @@
 services:
   cups-pdf:
-    build: .
-    container_name: cups-pdf-printer
+    image: mjmaisey/pdf-printer-docker:latest
+    container_name: pdf-printer
     ports:
       - "631:631"
+    environment:
+      - PRINTER_NAME=PDF-Printer
     volumes:
-      - ./config:/config:ro
       - ./pdfs:/pdfs
     restart: unless-stopped

@@ -6,7 +6,6 @@ Printing any document to this printer saves it as a PDF file on the host.
 ## Directory Structure
 
 ```
-config/printer.conf   # Printer configuration (name, etc.)
 pdfs/                 # PDF output files land here
 Dockerfile            # Container image definition (Ubuntu 24.04 + CUPS)
 docker-compose.yml    # Compose file with bind mounts and port mapping
@@ -15,10 +14,11 @@ entrypoint.sh         # Container startup script
 
 ## Quick Start
 
-1. *(Optional)* Edit `config/printer.conf` to set your desired printer name:
+1. *(Optional)* Set your desired printer name in `docker-compose.yml`:
 
-   ```
-   PRINTER_NAME=MyPDFPrinter
+   ```yaml
+   environment:
+     - PRINTER_NAME=MyPDFPrinter
    ```
 
 2. Start the container:
@@ -37,9 +37,9 @@ entrypoint.sh         # Container startup script
 
 ## Configuration
 
-`config/printer.conf` supports the following key:
+Configure via environment variables:
 
-| Key | Default | Description |
+| Variable | Default | Description |
 |---|---|---|
 | `PRINTER_NAME` | `PDF-Printer` | Name of the printer as it appears in CUPS and on the network |
 
@@ -77,11 +77,10 @@ All printed PDFs are saved to the `pdfs/` folder on the host. Filenames are deri
 
 ## Notes
 
-- The `config/` volume is mounted read-only inside the container.
 - The `pdfs/` volume is mounted read-write; CUPS writes directly to it.
 - Authentication is disabled by default — suitable for local/trusted networks.
   To enable basic auth, change `DefaultAuthType` in `entrypoint.sh` to `Basic`
   and set a password inside the container:
   ```bash
-  docker exec -it cups-pdf-printer passwd root
+  docker exec -it pdf-printer passwd root
   ```
