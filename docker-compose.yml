@@ -1,0 +1,10 @@
+services:
+  cups-pdf:
+    build: .
+    container_name: cups-pdf-printer
+    ports:
+      - "631:631"
+    volumes:
+      - ./config:/config:ro
+      - ./pdfs:/pdfs
+    restart: unless-stopped
